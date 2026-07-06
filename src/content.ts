@@ -280,7 +280,7 @@ export const contactSection = {
     },
     linkedin: {
       label: 'LinkedIn',
-      value: 'linkedin.com/in/martina-cutr%C3%AC-/',
+      value: 'linkedin.com/in/martina-cutrì-/',
     },
   },
 };
@@ -320,5 +320,5 @@ export const contactForm = {
 
 export const footer = {
   // Testo copyright (l'anno viene aggiornato automaticamente)
-  copyright: 'HR Consulting. Tutti i diritti riservati.',
+  copyright: 'Martina Cutrì. Tutti i diritti riservati.',
 };
