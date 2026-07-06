@@ -268,7 +268,7 @@ export const contactSection = {
   contactInfo: {
     email: {
       label: 'Email',
-      value: 'info@test.it',
+      value: 'info@testt.it',
     },
     phone: {
       label: 'Telefono',
