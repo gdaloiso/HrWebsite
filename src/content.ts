@@ -11,7 +11,7 @@
 
 export const siteInfo = {
   // Nome del brand/site
-  brandName: 'HR Consulting',
+  brandName: 'Martina Cutrì',
 
   // Sottotitolo del brand
   brandTagline: 'Consulenza Risorse Umane',
@@ -268,7 +268,7 @@ export const contactSection = {
   contactInfo: {
     email: {
       label: 'Email',
-      value: 'info@hrconsulting.it',
+      value: 'info@test.it',
     },
     phone: {
       label: 'Telefono',
@@ -276,11 +276,11 @@ export const contactSection = {
     },
     location: {
       label: 'Sede',
-      value: 'via Zurigo 20, Milano, Italia',
+      value: 'Milano, Italia',
     },
     linkedin: {
       label: 'LinkedIn',
-      value: 'linkedin.com/in/hrconsulting',
+      value: 'linkedin.com/in/martina-cutr%C3%AC-/',
     },
   },
 };
