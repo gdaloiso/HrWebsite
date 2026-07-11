@@ -33,6 +33,48 @@ import {
   footer,
 } from './content';
 
+// Anima il contenuto (dissolvenza dal basso) la prima volta che entra nel viewport.
+function Reveal({
+  children,
+  className = '',
+  delay = 0,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  delay?: number;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.15 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div
+      ref={ref}
+      className={`${className} transition-all duration-700 ease-out ${
+        visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+      }`}
+      style={delay ? { transitionDelay: `${delay}ms` } : undefined}
+    >
+      {children}
+    </div>
+  );
+}
+
 // Mostra il form di contatto oltre alle icone cliccabili (email/whatsapp/maps/linkedin).
 // Rimettere a true per riattivarlo quando sarà collegato a un invio email reale.
 const SHOW_CONTACT_FORM = false;
@@ -260,9 +302,9 @@ function App() {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div className="relative">
+            <Reveal className="relative">
               <img
-                src="https://images.pexels.com/photos/2388186/pexels-photo-2388186.jpeg?auto=compress&cs=tinysrgb&w=800"
+                src="https://images.pexels.com/photos/3760067/pexels-photo-3760067.jpeg?auto=compress&cs=tinysrgb&w=800"
                 alt="Professionista HR"
                 className="rounded-2xl shadow-xl w-full object-cover"
               />
@@ -270,9 +312,9 @@ function App() {
                 <p className="text-3xl font-bold">{about.statNumber}</p>
                 <p className="text-primary-100">{about.statLabel}</p>
               </div>
-            </div>
+            </Reveal>
 
-            <div>
+            <Reveal delay={150}>
               <span className="text-primary-600 font-semibold uppercase tracking-wider text-sm">{about.sectionLabel}</span>
               <h2 className="font-display text-3xl sm:text-4xl font-bold text-neutral-900 mt-3 mb-6">
                 {about.title}
@@ -301,7 +343,7 @@ function App() {
                   </div>
                 ))}
               </div>
-            </div>
+            </Reveal>
           </div>
         </div>
       </section>
@@ -315,7 +357,7 @@ function App() {
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="text-white">
+            <Reveal className="text-white">
               <span className="text-accent-300 font-semibold uppercase tracking-wider text-sm">{book.sectionLabel}</span>
               <h2 className="font-display text-3xl sm:text-4xl font-bold mt-3 mb-6">
                 {book.title}
@@ -343,9 +385,9 @@ function App() {
                 {book.buttonText}
                 <ExternalLink className="w-4 h-4" />
               </a>
-            </div>
+            </Reveal>
 
-            <div className="relative flex justify-center lg:justify-end">
+            <Reveal className="relative flex justify-center lg:justify-end" delay={150}>
               <div className="relative">
                 <div className="absolute inset-0 bg-gradient-to-br from-accent-400/20 to-transparent rounded-2xl transform rotate-3 scale-105" />
                 <div className="relative bg-white rounded-lg shadow-2xl p-8 max-w-sm mx-auto transform hover:-translate-y-2 transition-transform duration-300">
@@ -362,7 +404,7 @@ function App() {
                   </div>
                 </div>
               </div>
-            </div>
+            </Reveal>
           </div>
         </div>
       </section>
@@ -373,7 +415,7 @@ function App() {
         className="py-24 bg-gradient-to-b from-neutral-50 to-white"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
+          <Reveal className="text-center mb-16">
             <span className="text-primary-600 font-semibold uppercase tracking-wider text-sm">{servicesSection.sectionLabel}</span>
             <h2 className="font-display text-3xl sm:text-4xl font-bold text-neutral-900 mt-3 mb-4">
               {servicesSection.title}
@@ -381,15 +423,15 @@ function App() {
             <p className="text-neutral-600 max-w-2xl mx-auto">
               {servicesSection.description}
             </p>
-          </div>
+          </Reveal>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {servicesSection.services.map((service) => {
+            {servicesSection.services.map((service, index) => {
               const IconComponent = iconMap[service.id] || FileText;
               return (
+                <Reveal key={service.id} delay={(index % 3) * 100}>
                 <div
-                  key={service.id}
-                  className="group relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden"
+                  className="group relative h-full bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden"
                 >
                   <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary-500 to-primary-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
                   <div className="p-8">
@@ -406,7 +448,7 @@ function App() {
                     <ul className="space-y-2">
                       {service.features.map((feature, fIndex) => (
                         <li key={fIndex} className="flex items-center gap-2 text-sm text-neutral-600">
-                          <Star className="w-4 h-4 text-accent-500 flex-shrink-0" />
+                          <CheckCircle2 className="w-4 h-4 text-primary-600 flex-shrink-0" />
                           {feature}
                         </li>
                       ))}
@@ -420,6 +462,7 @@ function App() {
                     </button>
                   </div>
                 </div>
+                </Reveal>
               );
             })}
           </div>
@@ -429,19 +472,21 @@ function App() {
       {/* Testimonials / Trust Section */}
       <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
+          <Reveal className="text-center mb-16">
             <span className="text-primary-600 font-semibold uppercase tracking-wider text-sm">{statsSection.sectionLabel}</span>
             <h2 className="font-display text-3xl sm:text-4xl font-bold text-neutral-900 mt-3">
               {statsSection.title}
             </h2>
-          </div>
+          </Reveal>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid sm:grid-cols-3 gap-8 max-w-5xl mx-auto">
             {statsSection.stats.map((stat, index) => (
-              <div key={index} className="text-center p-8 rounded-2xl bg-gradient-to-br from-primary-50 to-white border border-primary-100">
-                <p className="text-4xl font-bold text-primary-600 mb-2">{stat.number}</p>
-                <p className="text-neutral-600">{stat.label}</p>
-              </div>
+              <Reveal key={index} delay={index * 100}>
+                <div className="h-full text-center p-8 rounded-2xl bg-gradient-to-br from-primary-50 to-white border border-primary-100">
+                  <p className="text-4xl font-bold text-primary-600 mb-2">{stat.number}</p>
+                  <p className="text-neutral-600">{stat.label}</p>
+                </div>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -454,7 +499,7 @@ function App() {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className={`grid gap-16 ${SHOW_CONTACT_FORM ? 'lg:grid-cols-2' : 'max-w-2xl mx-auto'}`}>
-            <div className="text-white">
+            <Reveal className="text-white">
               <span className="text-primary-300 font-semibold uppercase tracking-wider text-sm">{contactSection.sectionLabel}</span>
               <h2 className="font-display text-3xl sm:text-4xl font-bold mt-3 mb-6">
                 {contactSection.title}
@@ -519,7 +564,7 @@ function App() {
                   </div>
                 </a>
               </div>
-            </div>
+            </Reveal>
 
             {SHOW_CONTACT_FORM && (
             <div className="bg-white rounded-2xl shadow-2xl p-8">
