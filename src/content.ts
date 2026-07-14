@@ -14,7 +14,7 @@ export const siteInfo = {
   brandName: 'Martina Cutrì',
 
   // Sottotitolo del brand
-  brandTagline: 'Consulenza Risorse Umane',
+  brandTagline: 'Disegna la tua prossima mossa professionale.',
 
   // Anno di inizio attività (per il copyright)
   startYear: 2024,
@@ -128,13 +128,13 @@ export const book = {
       ],
 
   // Testo del bottone
-  buttonText: 'Acquista su Amazon',
+  buttonText: 'Prossimamente acquistabile su Amazon',
 
   // Link ad Amazon (INSERISCI IL TUO LINK QUI)
   amazonLink: 'https://www.amazon.it/dp/YOUR_BOOK_ASIN',
 
   // Testo sotto la copertina
-  availabilityText: 'Disponibile su Amazon',
+  availabilityText: 'Prossimamente disponibile su Amazon',
 };
 
 // ========================================
